@@ -1,0 +1,49 @@
+public interface hw1{
+    public String name();
+    public int fact(int n);
+    public int fib(int n);
+    public double sqrt(double n); 
+}
+
+public class Recursion implements hw1 {
+    public String name(){
+	return "Shin,Dong";
+    }
+
+    public int fact(int n){
+	if (n<0) {
+	    throw IllegalArgumentException;
+	} else if(n<2) {
+	    return 1;
+	} else {
+	    return n*fact(n-1);
+	}
+    }
+
+    public int fib(int n){
+	if (n<0){
+	    throw IllegalArgumentException;
+	} else if(n==0){
+	    return 0;
+	} else if(n==1){
+	    return 1;
+	} else {
+	    return fib(n-2)+fib(n-1);
+	}
+    }
+
+    public double sqrt(double n){
+	if(n<0){
+	    throw IllegalArgumentException;
+	}
+	return sqrt2(n, n/3);
+    }
+
+    public double sqrt2(int n, int g){
+	if(n==g*g){
+	    return g;
+	} else {
+	    return sqrt2(n,n/(g*2)/2);
+	}
+    }
+}
