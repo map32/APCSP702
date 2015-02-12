@@ -29,6 +29,7 @@ public class KnightsTour{
     public String toString(){
 	String ans = "";
 	for(int i=0;i<board[0].length;i++){
+
 	    ans += "\n";
 	    for(int j=0;j<board[0].length;j++){
 		if(board[i][j]==-1){
@@ -61,31 +62,57 @@ public class KnightsTour{
 	}
     }
 
-    
 
-    public void solve(){
-				
+    public boolean solve(){
+	Random r = new Random();
+	return solve(r.nextInt(board[0].length),r.nextInt(board[0].length),0);
     }
 
 
-    public void solve(int startx, int starty){
-	board[startx][starty]=0;
-
+    public boolean solve(int x, int y, int currentMoveNumber){
+	if(currentMoveNumber!=0){
+	    try {
+		if(board[x][y] != -1){
+		    return false;
+		} else {
+		    board[x][y]=currentMoveNumber;
+		    if(currentMoveNumber == (board[0].length*board[0].length)){
+			return true;
+		    }
+		}
+	    } catch (ArrayIndexOutOfBoundsException e){
+		return false;
+	    }
+	} else {
+	    board[x][y]=0;
+	}
+	System.out.println(this);
+	wait(200);
+	return solve(x+2,y+1,currentMoveNumber+1) || solve(x+2,y-1,currentMoveNumber+1) || solve(x-2,y-1,currentMoveNumber+1) || solve(x-2,y+1,currentMoveNumber+1) || solve(x+1,y+2,currentMoveNumber+1) || solve(x+1,y-2,currentMoveNumber+1) || solve(x-1,y-2,currentMoveNumber+1) || solve(x-1,y+2,currentMoveNumber+1);
     }
 
 
 
 		
-    public boolean solve(int x,int y,int currentMoveNumber){
+    /*    public boolean solve(int x,int y,int currentMoveNumber){
+	try {
+	    if(board[x][y]<currentMoveNumber){
+		return false;
+	    } else {
+		board[x][y]=currentMoveNumber;
+		
+	    }
 	System.out.println(this);
 	wait(20);
-				
+	
 	return false;
-    }
+	}*/
 
     public static void main(String[] afd){
-	KnightsTour K = new KnightsTour(10);
-	System.out.println(K.toString());
+	KnightsTour K = new KnightsTour(5);
+	if(!K.solve()){
+	    System.out.println("no solution");
+	}
     }
 
 }
