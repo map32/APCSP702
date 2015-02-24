@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Scanner;
 
 public class LakeMaking{
@@ -10,12 +9,12 @@ public class LakeMaking{
 
     File file;
 
-    public LakeMaking(){
+    public LakeMaking() throws FileNotFoundException{
 	file = new File("lakemake.in");
 	
-	Scanner sc = new Scanner(file);
 
 	try {
+	    Scanner sc = new Scanner(file);
 	    int i=0;
 	    while(sc.hasNextLine()) {
 		if(i==0){
@@ -26,9 +25,9 @@ public class LakeMaking{
 		    map = new int[R][C];
 		    instructions = new int[N][3];
 		} else if(i<R+1) {
-		    for(int i=0;i<R;i++){
-			for(int j=0;j<C;j++){
-			    map[i][j]=sc.nextInt();
+		    for(int r=0;r<R;r++){
+			for(int c=0;c<C;c++){
+			    map[r][c]=sc.nextInt();
 			}
 		    }
 		} else {
@@ -42,9 +41,51 @@ public class LakeMaking{
 	catch (FileNotFoundException e){
 	    e.printStackTrace();
 	}
+	execute();
     }
 
     public void execute(){
+	for(int i=0;i<instructions.length;i++){
+	    int k = largest(instructions[i][0],instructions[i][1]);
+	    for(int r=instructions[i][0]-1;r<instructions[i][0]+2;r++){
+		for(int c=instructions[i][1]-1;c<instructions[i][1]+2;c++){
+		    if(!(map[r][c]<k-instructions[i][2])){
+			map[r][c]=k-instructions[i][2];
+		    }
+		}
+	    }
+	}
+	output();
     }
 
+    public int largest(int r, int c){
+	int k=map[r][c];
+	for(int i=0;i<3;i++){
+	    for(int j=0;j<3;j++){
+		if(k<map[i+r][j+c]){
+		    k=map[i+r][j+c];
+		}
+	    }
+	}
+	return k;
+    }
+
+    public void output(){
+	int sum=0;
+	for(int r=0;r<R;r++){
+	    for(int c=0;c<C;c++){
+		if(E>map[r][c]){
+		    sum+=(E-map[r][c])*36*36;
+		}
+	    }
+	}
+	try {
+	    file = new File("lakemake.out");
+	    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+	    writer.write(sum);
+	    writer.close();
+	} catch (Exception e){
+	    e.printStackTrace();
+	}
+    }
 }
