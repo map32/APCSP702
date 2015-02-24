@@ -17,6 +17,10 @@ public class KnightsTour{
     private String go(int x,int y){
 	return ("\033[" + x + ";" + y + "H");
     }
+
+    public String name(){
+	return "shin.dong";
+    }
  
     public void wait(int millis){
 	try {
@@ -50,9 +54,7 @@ public class KnightsTour{
 		}
 	    }
 	}
-	//build your knights tour here...
-	//return hide + go(0,0) + ans + "\n" + show;
-	return ans;
+	return hide + go(0,0) + ans + "\n" + show;
     }
 
     public KnightsTour(int size){
@@ -64,10 +66,12 @@ public class KnightsTour{
 
 
     public boolean solve(){
-	Random r = new Random();
-	return solve(r.nextInt(board[0].length),r.nextInt(board[0].length),1,board);
+	return solve(0,0,1,board);
     }
 
+    public boolean solve(int x, int y){
+	return solve(x,y,1,board);
+    }
 
     public boolean solve(int x, int y, int currentMoveNumber, int[][] thisboard){
 	int[][] board2 = new int[board[0].length][board[0].length];
@@ -114,7 +118,7 @@ public class KnightsTour{
 	}*/
 
     public static void main(String[] afd){
-	KnightsTour K = new KnightsTour(5);
+	KnightsTour K = new KnightsTour(Integer.parseInt(afd[0]));
 	if(!K.solve()){
 	    System.out.println(K);
 	    System.out.println("no solution");
