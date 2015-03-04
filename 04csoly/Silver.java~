@@ -22,24 +22,28 @@ public class Silver{
 		    C=sc.nextInt();
 		    S=sc.nextInt();
 		    map = new String[R];
+		    sc.nextLine();
 		} else if(i<R+1) {
 		    for(int r=0;r<R;r++){
 			map[r]=sc.nextLine();
 			System.out.println(""+i+r+map[r]);
 			i++;
 		    }
-		    i--;
+		    //sc.nextLine();
 		} else {
-		    instructions[0][0]=sc.nextInt();
-		    instructions[0][1]=sc.nextInt();
-		    instructions[1][0]=sc.nextInt();
-		    instructions[1][1]=sc.nextInt();
+		    if(sc.hasNextInt()){
+			instructions[0][0]=sc.nextInt();
+			instructions[0][1]=sc.nextInt();
+			instructions[1][0]=sc.nextInt();
+			instructions[1][1]=sc.nextInt();
+			System.out.println(""+instructions[0][0]+instructions[0][1]+instructions[1][0]+instructions[1][1]);
+		    }
 		}
 		i++;
 	    }
 	}
 	catch (FileNotFoundException e){
-	    e.printStackTrace();
+	    //e.printStackTrace();
 	}
 	execute();
     }
@@ -51,35 +55,27 @@ public class Silver{
     
     public boolean calculate(int r, int c, int z){
 	try{
-	if(z>S || map[r].substring(c,c+1).equals("*")){
+	if(z>S || map[r-1].substring(c-1,c).equals("*")){
 	    return false;
 	} else {
 	    if(z==S && r==instructions[1][0] && c==instructions[1][1]){
 		N++;
+		System.out.println(N);
 		return true;
 	    } else {
 		return calculate(r-1,c,z+1) || calculate(r+1,c,z+1) || calculate(r,c-1,z+1) || calculate(r,c+1,z+1);
 	    }
 	}
 	} catch (ArrayIndexOutOfBoundsException e){
-	    e.printStackTrace();
+	    //return false;
+	    //e.printStackTrace();
+	} catch (StringIndexOutOfBoundsException e){
 	}
 	return false;
     }
 
-    public int largest(int r, int c){
-	int k=Integer.parseInt(map[r].substring(c,c+1));
-	for(int i=0;i<3;i++){
-	    for(int j=0;j<3;j++){
-		if(k<Integer.parseInt(map[i+r].substring(j+c,j+c+1))){
-		    k=Integer.parseInt(map[i+r].substring(j+c,j+c+1));
-		}
-	    }
-	}
-	return k;
-    }
-
     public void output(){
+	System.out.println(""+R+" "+C+" "+S+" "+N);
 	try {
 	    file = new File("ctravel.out");
 	    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
