@@ -2,24 +2,24 @@ public class LNode {
 
     private int value;
     private LNode next;
-    private int index;
 
-    public int  getNext(int index){
-	if(index==0){
-	    return value;
-	}
-	return next.getNext(index--);
+    public LNode  getNext(){
+	return next;
     }
 
-    public void setNext(int value, int index){
-	if(index==0){
-	    this.value=value;
-	} else {
-	    next.setNext(index--);
-	}
+    public void set(int value){
+	this.value = value;
+    }
+
+    public void setNext(LNode value){
+	next = value;
+    }
+
+    public int getValue(){
+	return value;
     }
 
     public String toString(){
-	return value;
+	return Integer.toString(value);
     }
 }
