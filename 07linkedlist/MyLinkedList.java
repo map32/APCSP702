@@ -91,9 +91,10 @@ public class MyLinkedList<T> {
 	    return size-1;
 	}
 	for(int i=0;i<size;i++){
-	    if(current.getValue()==value){
+	    if(current.getValue().equals(value)==true){
 		return i;
 	    }
+	    System.out.println(current.getValue()+" "+value);
 	    current = current.getNext();
 	}
 	return -1;
@@ -101,11 +102,11 @@ public class MyLinkedList<T> {
 
     public static void main(String[] args){
 	MyLinkedList lel = new MyLinkedList();
-	lel.add("333");
-	lel.add("444");
-	lel.add("555");
+	lel.add(232);
+	lel.add("ag");
+	lel.add(true);
 	System.out.println(lel.toString() + lel.size()+lel.last);
-	System.out.println(lel.indexOf("444"));
+	System.out.println(lel.indexOf(232));
 	System.out.println(lel.toString() + lel.size()+lel.last);
     }
 }
