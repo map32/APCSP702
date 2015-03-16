@@ -1,12 +1,16 @@
-public class MyLinkedList {
+public class MyLinkedList<T> {
     
-    private LNode nodes;
-    private LNode last;
+    private LNode<T> nodes;
+    private LNode<T> last;
     private int size;
     
     public MyLinkedList() {
 	nodes = null;
 	last = nodes;
+    }
+
+    public String name(){
+	return "dong.shin";
     }
 
     public int size(){
@@ -15,7 +19,7 @@ public class MyLinkedList {
 
     public String toString(){
 	String str = new String();
-	LNode index = nodes;
+	LNode<T> index = nodes;
 	str+="[ ";
 	while(index!=null){
 	    str+=index.getValue()+", ";
@@ -26,23 +30,23 @@ public class MyLinkedList {
 	return str.substring(0,str.length()-2)+" ]";
     }
 
-    public boolean add(int value){
+    public boolean add(T value){
 	if(last == null){
-	    nodes = new LNode();
+	    nodes = new LNode<T>();
 	    last = nodes;
 	    last.set(value);
 	    size++;
 	    return true;
 	}
-	last.setNext(new LNode());
+	last.setNext(new LNode<T>());
 	last.getNext().set(value);
 	last = last.getNext();
 	size++;
 	return true;
     }
 
-    public int remove(int indexy){
-	LNode index = nodes;
+    public T remove(int indexy){
+	LNode<T> index = nodes;
 	if(indexy==0){
 	    nodes = nodes.getNext();
 	    size--;
@@ -63,8 +67,8 @@ public class MyLinkedList {
 	return index.getValue();
     }
 
-    public void set(int index, int value){
-	LNode current = nodes;
+    public void set(int index, T value){
+	LNode<T> current = nodes;
 	while(index!=0){
 	    current = current.getNext();
 	    index--;
@@ -72,8 +76,8 @@ public class MyLinkedList {
 	current.set(value);
     }
 
-    public int get(int index){
-	LNode current = nodes;
+    public T get(int index){
+	LNode<T> current = nodes;
 	while(index!=0){
 	    current = current.getNext();
 	    index--;  
@@ -81,8 +85,8 @@ public class MyLinkedList {
 	return current.getValue();
     }
 
-    public int indexOf(int value){
-	LNode current = nodes;
+    public int indexOf(T value){
+	LNode<T> current = nodes;
 	if(last.getValue()==value){
 	    return size-1;
 	}
@@ -97,11 +101,11 @@ public class MyLinkedList {
 
     public static void main(String[] args){
 	MyLinkedList lel = new MyLinkedList();
-	lel.add(333);
-	lel.add(444);
-	lel.add(555);
+	lel.add("333");
+	lel.add("444");
+	lel.add("555");
 	System.out.println(lel.toString() + lel.size()+lel.last);
-	System.out.println(lel.indexOf(444));
+	System.out.println(lel.indexOf("444"));
 	System.out.println(lel.toString() + lel.size()+lel.last);
     }
 }

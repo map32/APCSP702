@@ -1,25 +1,32 @@
-public class LNode {
+public class LNode<T> {
 
-    private int value;
-    private LNode next;
+    private T value;
+    private LNode<T> next;
 
-    public LNode  getNext(){
+    public LNode(){
+    }
+
+    public LNode(T data){
+	set(data);
+    }
+
+    public LNode<T> getNext(){
 	return next;
     }
 
-    public void set(int value){
+    public void set(T value){
 	this.value = value;
     }
 
-    public void setNext(LNode value){
+    public void setNext(LNode<T> value){
 	next = value;
     }
 
-    public int getValue(){
+    public T getValue(){
 	return value;
     }
 
     public String toString(){
-	return Integer.toString(value);
+	return value.toString();
     }
 }
