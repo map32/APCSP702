@@ -28,25 +28,32 @@ public class LakeMaking{
 		    for(int r=0;r<R;r++){
 			for(int c=0;c<C;c++){
 			    map[r][c]=sc.nextInt();
+			    //System.out.println(map[r][c]);
+			    i++;
 			}
 		    }
+		    i--;
 		} else {
-		    instructions[i-R-1][0]=sc.nextInt();
-		    instructions[i-R-1][1]=sc.nextInt();
-		    instructions[i-R-1][2]=sc.nextInt();
+		    instructions[i-R*C-1][0]=sc.nextInt();
+		    instructions[i-R*C-1][1]=sc.nextInt();
+		    instructions[i-R*C-1][2]=sc.nextInt();
 		}
 		i++;
 	    }
-	}
-	catch (FileNotFoundException e){
+	} catch (ArrayIndexOutOfBoundsException e){
+	} catch (FileNotFoundException e){
 	    e.printStackTrace();
 	}
 	execute();
     }
 
+    public String name(){
+	return "shin.dong";
+    }
+
     public void execute(){
 	for(int i=0;i<instructions.length;i++){
-	    int k = largest(instructions[i][0],instructions[i][1]);
+	    int k = largest(instructions[i][0]-1,instructions[i][1]-1);
 	    for(int r=instructions[i][0]-1;r<instructions[i][0]+2;r++){
 		for(int c=instructions[i][1]-1;c<instructions[i][1]+2;c++){
 		    if(!(map[r][c]<k-instructions[i][2])){
@@ -63,6 +70,7 @@ public class LakeMaking{
 	for(int i=0;i<3;i++){
 	    for(int j=0;j<3;j++){
 		if(k<map[i+r][j+c]){
+		    //System.out.println(i+r+" "+(j+c));
 		    k=map[i+r][j+c];
 		}
 	    }
@@ -82,10 +90,14 @@ public class LakeMaking{
 	try {
 	    file = new File("lakemake.out");
 	    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-	    writer.write(sum);
+	    writer.write(Integer.toString(sum*4));
 	    writer.close();
 	} catch (Exception e){
 	    e.printStackTrace();
 	}
+    }
+
+    public static void main(String[] dd) throws FileNotFoundException{
+	LakeMaking L = new LakeMaking();
     }
 }

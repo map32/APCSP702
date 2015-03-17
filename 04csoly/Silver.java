@@ -53,6 +53,10 @@ public class Silver{
 	output();
     }
     
+    public String name(){
+	return "shin.dong";
+    }
+
     public boolean calculate(int r, int c, int z){
 	try{
 	if(z>S || map[r-1].substring(c-1,c).equals("*")){

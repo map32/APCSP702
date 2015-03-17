@@ -59,11 +59,19 @@ public class Silver{
 	    return false;
 	} else {
 	    if(z==S && r==instructions[1][0] && c==instructions[1][1]){
-		N++;
-		System.out.println(N);
+		//N++;
+		//System.out.println(""+z+" "+S+" "+r+" "+c+" "+N);
 		return true;
 	    } else {
-		return calculate(r-1,c,z+1) || calculate(r+1,c,z+1) || calculate(r,c-1,z+1) || calculate(r,c+1,z+1);
+		if(calculate(r-1,c,z+1)){
+		    N++;
+		} else if(calculate(r+1,c,z+1)){
+		    N++;
+		} else if(calculate(r,c-1,z+1)){
+		    N++;
+		} else if(calculate(r,c+1,z+1)){
+		    N++;
+		}
 	    }
 	}
 	} catch (ArrayIndexOutOfBoundsException e){
@@ -78,8 +86,8 @@ public class Silver{
 	System.out.println(""+R+" "+C+" "+S+" "+N);
 	try {
 	    file = new File("ctravel.out");
-	    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-	    writer.write(N);
+	    FileWriter writer = new FileWriter(file);
+	    writer.write(Integer.toString(N));
 	    writer.close();
 	} catch (Exception e){
 	    e.printStackTrace();

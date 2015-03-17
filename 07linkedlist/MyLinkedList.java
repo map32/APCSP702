@@ -10,7 +10,7 @@ public class MyLinkedList<T> {
     }
 
     public String name(){
-	return "dong.shin";
+	return "shin.dong";
     }
 
     public int size(){

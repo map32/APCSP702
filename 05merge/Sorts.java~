@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Sorts{
 
@@ -11,33 +12,45 @@ public class Sorts{
 	for(int i=0;i<intlist.length;i++){
 	    list.add(intlist[i]);
 	}
-	merge();
+	list2 = merge(list);
+	System.out.println(list2);
     }
 
-    private static ArrayList<Comparable> merge(ArrayList<Comparable> a, ArrayList<Comparable> b){
-	if(a.size==1){
+    private static ArrayList<Comparable> merge(ArrayList<Comparable> a){
+	ArrayList<Comparable> z = new ArrayList<Comparable>();
+	if(a.size()==1){
 	    return a;
 	} else {
-	    ArrayList<Comparable> x = merge(a.subList(0,a.size()/2));
-	    ArrayList<Comparable> y = merge(a.subList(a.size()/2,a.size()));
+	    ArrayList<Comparable> x = merge(new ArrayList<Comparable>(a.subList(0,a.size()/2)));
+	    ArrayList<Comparable> y = merge(new ArrayList<Comparable>(a.subList(a.size()/2,a.size())));
 	    do {
 		if(x.get(0).compareTo(y.get(0))<=0){
-		    list2.add(x.remove(0));
+		    z.add(x.remove(0));
 		} else {
-		    list2.add(y.remove(0));
+		    z.add(y.remove(0));
 		}
 	    } while (x.size()>0 && y.size()>0);
 	    if(x.size()>0){
-		list2.addAll(x);
+		z.addAll(x);
 	    } else if (y.size()>0){
-		list2.addAll(y);
+		z.addAll(y);
 	    }
-	    return list2;
+	    return z;
 	}
     }
 
+    public static int[] randomize(int min, int max, int len){
+	int[] a = new int[len];
+	Random r = new Random();
+	for(int i=0;i<len;i++){
+	    a[i]=r.nextInt(max-min+1)+min;
+	}
+	return a;
+    }
+
     public static void main(String[]dd){
-	int[] a = {3,6,2,7,5,1,4,9,8,0};
-	System.out.println(mergesort(a));
+	int[] a = randomize(-1000000,1000000,15300);
+        mergesort(a);
+	//	System.out.println(list2);
     }
 }

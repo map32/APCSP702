@@ -6,6 +6,10 @@ public class Sorts{
     private static ArrayList<Comparable> list;
     private static ArrayList<Comparable> list2;
 
+    public static String name(){
+	return "shin.dong";
+    }
+
     public static void mergesort(int[] intlist){
 	list = new ArrayList<Comparable>();
 	list2 = new ArrayList<Comparable>();
@@ -13,6 +17,7 @@ public class Sorts{
 	    list.add(intlist[i]);
 	}
 	list2 = merge(list);
+	System.out.println(list2);
     }
 
     private static ArrayList<Comparable> merge(ArrayList<Comparable> a){
@@ -48,8 +53,8 @@ public class Sorts{
     }
 
     public static void main(String[]dd){
-	int[] a = randomize(-1000000,1000000,153);
+	int[] a = randomize(-1000000,1000000,100000);
         mergesort(a);
-	System.out.println(list2);
+	//	System.out.println(list2);
     }
 }
