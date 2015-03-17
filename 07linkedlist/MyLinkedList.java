@@ -45,6 +45,30 @@ public class MyLinkedList<T> {
 	return true;
     }
 
+    public boolean add(int index, T value){
+	if(last == null){
+	    nodes = new LNode<T>();
+	    last = nodes;
+	    last.set(value);
+	    size++;
+	    return true;
+	}
+	LNode<T> ind = nodes;
+	while(index>0){
+	    ind = ind.getNext();
+	    index--;
+	    if(ind==last){
+		add(value);
+		return true;
+	    }
+	}
+	LNode<T> ind2 = ind.getNext();
+	ind.setNext(new LNode<T>());
+	ind.getNext().setNext(ind2);
+	size++;
+	return true;
+    }
+
     public T remove(int indexy){
 	LNode<T> index = nodes;
 	if(indexy==0){
