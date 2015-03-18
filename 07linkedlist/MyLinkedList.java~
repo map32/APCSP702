@@ -10,7 +10,7 @@ public class MyLinkedList<T> {
     }
 
     public String name(){
-	return "dong.shin";
+	return "shin.dong";
     }
 
     public int size(){
@@ -41,6 +41,30 @@ public class MyLinkedList<T> {
 	last.setNext(new LNode<T>());
 	last.getNext().set(value);
 	last = last.getNext();
+	size++;
+	return true;
+    }
+
+    public boolean add(int index, T value){
+	if(last == null){
+	    nodes = new LNode<T>();
+	    last = nodes;
+	    last.set(value);
+	    size++;
+	    return true;
+	}
+	LNode<T> ind = nodes;
+	while(index>0){
+	    ind = ind.getNext();
+	    index--;
+	    if(ind==last){
+		add(value);
+		return true;
+	    }
+	}
+	LNode<T> ind2 = ind.getNext();
+	ind.setNext(new LNode<T>());
+	ind.getNext().setNext(ind2);
 	size++;
 	return true;
     }

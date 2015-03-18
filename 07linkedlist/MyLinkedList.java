@@ -1,9 +1,30 @@
-public class MyLinkedList<T> {
+import java.util.Iterator;
+import java.lang.UnsupportedOperationException;
+
+public class MyLinkedList<T> implements Iterable<T>{
     
     private LNode<T> nodes;
     private LNode<T> last;
+    private TheIterrer<T> iterrer;
     private int size;
     
+    public class TheIterrer<E extends T> implements Iterator<E>{
+	public boolean hasNext(){
+	    return nodes!=last;
+	}
+	public E next(){
+	    return nodes.getNext();
+	}
+	public void remove() throws UnsupportedOperationException{
+	    throw new UnsupportedOperationException();
+	}
+	
+    }
+    
+    public Iterator<T> iterator(){
+	return iterrer;
+    }
+
     public MyLinkedList() {
 	nodes = null;
 	last = nodes;
@@ -125,7 +146,7 @@ public class MyLinkedList<T> {
     }
 
     public static void main(String[] args){
-	MyLinkedList lel = new MyLinkedList();
+	MyLinkedList<Object> lel = new MyLinkedList<Object>();
 	lel.add(232);
 	lel.add("ag");
 	lel.add(true);

@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Random;
 
-public class QuickSelect {
+public class Sorts {
 
     static int[] array;
 
