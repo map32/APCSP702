@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.lang.UnsupportedOperationException;
 import java.util.NoSuchElementException;
 
-public class MyLinkedList<T>{
+public class MyLinkedList<T> implements Iterable<T>{
     
     private LNode<T> nodes;
     private LNode<T> last;
@@ -11,8 +11,13 @@ public class MyLinkedList<T>{
     
     public class TheIterrer<T> implements Iterator<T>{
 	private LNode<T> current;
+       
+	public TheIterrer(LNode<T> n){
+	    current = n;
+	}
+
 	public boolean hasNext(){
-	    return nodes!=null;
+	    return current!=null;
 	}
 	public T next(){
 	    if(hasNext()){
@@ -37,6 +42,7 @@ public class MyLinkedList<T>{
     public MyLinkedList() {
 	nodes = null;
 	last = nodes;
+	iterrer = new TheIterrer<T>(nodes);
     }
 
     public String name(){
@@ -81,6 +87,11 @@ public class MyLinkedList<T>{
 	    last = nodes;
 	    last.set(value);
 	    size++;
+	    return true;
+	} else if (index==0){
+	    LNode<T> ind = new LNode<T>(value);
+	    ind.setNext(nodes);
+	    nodes = ind;
 	    return true;
 	}
 	LNode<T> ind = nodes;
