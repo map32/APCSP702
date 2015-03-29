@@ -3,16 +3,16 @@ import java.util.Random;
 
 public class Sorts{
 
-    private static ArrayList<Comparable> list;
-    private static ArrayList<Comparable> list2;
+    private static ArrayList<Integer> list;
+    private static ArrayList<Integer> list2;
 
     public static String name(){
 	return "shin.dong";
     }
 
     public static void mergesort(int[] intlist){
-	list = new ArrayList<Comparable>();
-	list2 = new ArrayList<Comparable>();
+	list = new ArrayList<Integer>();
+	list2 = new ArrayList<Integer>();
 	for(int i=0;i<intlist.length;i++){
 	    list.add(intlist[i]);
 	}
@@ -20,13 +20,13 @@ public class Sorts{
 	System.out.println(list2);
     }
 
-    private static ArrayList<Comparable> merge(ArrayList<Comparable> a){
-	ArrayList<Comparable> z = new ArrayList<Comparable>();
+    private static ArrayList<Integer> merge(ArrayList<Integer> a){
+	ArrayList<Integer> z = new ArrayList<Integer>();
 	if(a.size()==1){
 	    return a;
 	} else {
-	    ArrayList<Comparable> x = merge(new ArrayList<Comparable>(a.subList(0,a.size()/2)));
-	    ArrayList<Comparable> y = merge(new ArrayList<Comparable>(a.subList(a.size()/2,a.size())));
+	    ArrayList<Integer> x = merge(new ArrayList<Integer>(a.subList(0,a.size()/2)));
+	    ArrayList<Integer> y = merge(new ArrayList<Integer>(a.subList(a.size()/2,a.size())));
 	    do {
 		if(x.get(0).compareTo(y.get(0))<=0){
 		    z.add(x.remove(0));
