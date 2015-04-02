@@ -41,6 +41,7 @@ return ("\033[" + x + ";" + y + "H");
 	    e.printStackTrace();
 	    System.exit(0);
 	}
+
 	
 	//copy from the single string to a 2D array
 	maze = new char[maxx][maxy];
@@ -57,18 +58,20 @@ return ("\033[" + x + ";" + y + "H");
     public String toString(){
 	String s = new String();
 	for(int i=0;i<maze.length;i++){
-	    for(int j=0;j<maze[0].length<j++){
-		s+=String.toString(maze[i][j]);
+	    for(int j=0;j<maze[0].length;j++){
+		s+=Character.toString(maze[i][j]);
 	    }
 	    s+="\n";
 	}	
+	return s;
     }
 
     public String toString(boolean animate){
 	if(animate){
-	    
+	    String ans = toString();
+	    return hide + clear + ans + "\n" + show;	    
 	} else {
-	    toString();
+	    return toString();
 	}
     }
 
@@ -77,24 +80,55 @@ return ("\033[" + x + ";" + y + "H");
      * Replace spaces with x's as you traverse the maze. 
      */
     public boolean solveBFS(boolean animate){
-	
+	Coordinate c = new Coordinate(startx,starty);
+	return solveBFS2(c,animate);
     }
+
+    public boolean solveBFS2(Coordinate c, boolean animate){
+	Coordinate up, down, left, right = null;
+	char current = maze[c.x()][c.y()];
+	
+	if(current=='E'){
+	    return true;
+	} else if(current=='x'||current=='#'){
+	    return false;
+	}
+	maze[c.x()][c.y()]='x';
+	if(c.x()>0){
+	    left = new Coordinate(c.x()-1,c.y());
+	    frontier.addFirst(left);
+	}
+	if(c.x()<maxx-1){
+	    right = new Coordinate(c.x()+1,c.y());
+	    frontier.addFirst(right);
+	}
+	if(c.y()>0){
+	    up = new Coordinate(c.x(),c.y()-1);
+	    frontier.addFirst(up);
+	}
+	if(c.y()<maxy-1){
+	    down = new Coordinate(c.x(),c.y()+1);
+	    frontier.addFirst(down);
+	}
+	return solveBFS2((Coordinate)frontier.removeLast(),animate);
+    }
+
 
     /**Solve the maze using a frontier in a DFS manner. 
      * When animate is true, print the board at each step of the algorithm.
      * Replace spaces with x's as you traverse the maze. 
      */
-    public boolean solveDFS(boolean animate){    }
+    //public boolean solveDFS(boolean animate){    }
 
-    public boolean solveBFS(){
+    /** public boolean solveBFS(){
 return solveBFS(false);
     }
     public boolean solveDFS(){
 return solveDFS(false);
     }
+    }**/
 }
-
-public class Coordinate {
+class Coordinate {
     private int x;
     private int y;
     public Coordinate(){
