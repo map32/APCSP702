@@ -5,8 +5,9 @@ public class Maze{
     private char[][]maze;
     private int maxx,maxy;
     private int startx,starty;
-    private MyDeque frontier;
+    private MyDeque<LNode<Coordinate>> frontier;
     private ArrayList<Coordinate> path;
+    private LNode<Coordinate> start;
     private static final String clear =  "\033[2J";
     private static final String hide =  "\033[?25l";
     private static final String show =  "\033[?25h";
@@ -18,7 +19,8 @@ return ("\033[" + x + ";" + y + "H");
     public Maze(String filename){
 	startx = -1;
 	starty = -1;
-	frontier = new MyDeque();
+	frontier = new MyDeque<LNode<Coordinate>>();
+	path = new ArrayList<Coordinate>();
 	//read the whole maze into a single string first
 	String ans = "";
 	try{
@@ -66,6 +68,17 @@ return ("\033[" + x + ";" + y + "H");
 	return s;
     }
 
+    public char add(char c){
+	if(c==' '){
+	    return '1';
+	} else {
+	    if(Character.getNumericValue(c)==-1 || c=='S'){
+		return c;
+	    }
+	    return (char)(Character.getNumericValue(c)+1+48);
+	}
+    }
+
     public String toString(boolean animate){
 	if(animate){
 	    String ans = toString();
@@ -80,37 +93,69 @@ return ("\033[" + x + ";" + y + "H");
      * Replace spaces with x's as you traverse the maze. 
      */
     public boolean solveBFS(boolean animate){
-	Coordinate c = new Coordinate(startx,starty);
+	LNode<Coordinate> c = new LNode<Coordinate>(new Coordinate(startx,starty));
+	c.setNext(null);
+	start = c;
 	return solveBFS2(c,animate);
     }
 
-    public boolean solveBFS2(Coordinate c, boolean animate){
+    public boolean solveBFS2(LNode<Coordinate> c, boolean animate){
 	Coordinate up, down, left, right = null;
-	char current = maze[c.x()][c.y()];
+	char current = maze[c.getValue().x()][c.getValue().y()];
+	LNode<Coordinate> now;
+	
+	if(animate){
+	    System.out.println(toString(animate));
+	    System.out.println(""+c.getValue().x()+","+c.getValue().y()+","+current);
+	}
 	
 	if(current=='E'){
+	    now = c;
+	    while(now!=null){
+		//System.out.println(now.getValue());
+		path.add(0,now.getValue());
+		now=now.getNext();
+	    }
+	    System.out.println(toString());
 	    return true;
-	} else if(current=='x'||current=='#'){
+	} else if(current=='x' || current=='#'){
+	    //maze[c.getValue().x()][c.getValue().y()]='x';
+	    try {
+		return solveBFS2(frontier.removeLast(),animate);
+	    } catch (NoSuchElementException e){
+		return false;
+	    }
+	}
+        maze[c.getValue().x()][c.getValue().y()]='x';
+	if(c.getValue().x()>0){
+	    left = new Coordinate(c.getValue().x()-1,c.getValue().y());
+	    now = new LNode<Coordinate>(left);
+	    now.setNext(c);
+	    frontier.addFirst(now);
+	}
+	if(c.getValue().x()<maxx-1){
+	    right = new Coordinate(c.getValue().x()+1,c.getValue().y());
+	    now = new LNode<Coordinate>(right);
+	    now.setNext(c);
+	    frontier.addFirst(now);
+	}
+	if(c.getValue().y()>0){
+	    up = new Coordinate(c.getValue().x(),c.getValue().y()-1);
+	    now = new LNode<Coordinate>(up);
+	    now.setNext(c);
+	    frontier.addFirst(now);
+	}
+	if(c.getValue().y()<maxy-1){
+	    down = new Coordinate(c.getValue().x(),c.getValue().y()+1);
+	    now = new LNode<Coordinate>(down);
+	    now.setNext(c);
+	    frontier.addFirst(now);
+	}
+	try {
+	    return solveBFS2(frontier.removeLast(),animate);
+	} catch (NoSuchElementException e){
 	    return false;
 	}
-	maze[c.x()][c.y()]='x';
-	if(c.x()>0){
-	    left = new Coordinate(c.x()-1,c.y());
-	    frontier.addFirst(left);
-	}
-	if(c.x()<maxx-1){
-	    right = new Coordinate(c.x()+1,c.y());
-	    frontier.addFirst(right);
-	}
-	if(c.y()>0){
-	    up = new Coordinate(c.x(),c.y()-1);
-	    frontier.addFirst(up);
-	}
-	if(c.y()<maxy-1){
-	    down = new Coordinate(c.x(),c.y()+1);
-	    frontier.addFirst(down);
-	}
-	return solveBFS2((Coordinate)frontier.removeLast(),animate);
     }
 
 
@@ -118,16 +163,125 @@ return ("\033[" + x + ";" + y + "H");
      * When animate is true, print the board at each step of the algorithm.
      * Replace spaces with x's as you traverse the maze. 
      */
-    //public boolean solveDFS(boolean animate){    }
 
-    /** public boolean solveBFS(){
-return solveBFS(false);
+    public boolean solveDFS(boolean animate){
+	LNode<Coordinate> c = new LNode<Coordinate>(new Coordinate(startx,starty));
+	c.setNext(null);
+	start = c;
+	return solveDFS2(c,animate);
     }
+
+    public boolean solveDFS2(LNode<Coordinate> c, boolean animate){
+	Coordinate up, down, left, right = null;
+	char current = maze[c.getValue().x()][c.getValue().y()];
+	LNode<Coordinate> now;
+	
+	if(animate){
+	    System.out.println(toString(animate));
+	    System.out.println(""+c.getValue().x()+","+c.getValue().y()+","+current);
+	}
+	
+	if(current=='E'){
+	    now = c;
+	    while(now!=null){
+		//System.out.println(now.getValue());
+		path.add(0,now.getValue());
+		now=now.getNext();
+	    }
+	    System.out.println(toString());
+	    return true;
+	} else if(current=='x' || current=='#'){
+	    //maze[c.getValue().x()][c.getValue().y()]='x';
+	    try {
+		return solveDFS2(frontier.removeLast(),animate);
+	    } catch (NoSuchElementException e){
+		return false;
+	    }
+	}
+        maze[c.getValue().x()][c.getValue().y()]='x';
+	if(c.getValue().x()>0){
+	    left = new Coordinate(c.getValue().x()-1,c.getValue().y());
+	    now = new LNode<Coordinate>(left);
+	    now.setNext(c);
+	    frontier.addLast(now);
+	}
+	if(c.getValue().x()<maxx-1){
+	    right = new Coordinate(c.getValue().x()+1,c.getValue().y());
+	    now = new LNode<Coordinate>(right);
+	    now.setNext(c);
+	    frontier.addLast(now);
+	}
+	if(c.getValue().y()>0){
+	    up = new Coordinate(c.getValue().x(),c.getValue().y()-1);
+	    now = new LNode<Coordinate>(up);
+	    now.setNext(c);
+	    frontier.addLast(now);
+	}
+	if(c.getValue().y()<maxy-1){
+	    down = new Coordinate(c.getValue().x(),c.getValue().y()+1);
+	    now = new LNode<Coordinate>(down);
+	    now.setNext(c);
+	    frontier.addLast(now);
+	}
+	try {
+	    return solveDFS2(frontier.removeLast(),animate);
+	} catch (NoSuchElementException e){
+	    return false;
+	}
+    }
+
+    public boolean solveBFS(){
+	 return solveBFS(false);
+     }
     public boolean solveDFS(){
-return solveDFS(false);
+	return solveDFS(false);
+    }
+
+    public int[] solutionCoordinates(){
+	int[] pa = new int[path.size()*2];
+	for(int i=0;i<path.size();i++){
+	    Coordinate c = path.get(i);
+	    pa[2*i]=c.x();
+	    pa[2*i+1]=c.y();
+	}
+	//System.out.println(pa);
+	return pa;
+    }
+
+    public String name(){
+	return "shin.dong";
+    }
+
+    public static void main(String[]args){
+	Maze m = new Maze("data3.dat");
+	m.solveDFS(false);
+	m.pathy();
+	int[] s = m.solutionCoordinates();
+	for(int i : s){
+	    System.out.println(i);
+	}
+	//System.out.println();
+    }
+
+    public void pathy(){
+	for(int i=0;i<path.size();i++){
+	    System.out.println(path.get(i).toString());
+	}
+    }
+
+}
+
+/**class Frontier{
+    public MyDeque<Coordinate> frontier;
+    public MyDeque<LNode> node;
+    
+    public void add(Coordinate c){
+    }
+    public Coordinate remove(){
+	return frontier.removeLast();
     }
     }**/
-}
+
 class Coordinate {
     private int x;
     private int y;

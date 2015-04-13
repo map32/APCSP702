@@ -127,10 +127,10 @@ public class MyDeque<T> {
 	}
 	s+="]";
 	s+=" [";
-	/**for(Object o : array){
+	for(Object o : array){
 	    s += o;
 	    s += " ";
-	    }**/
+	}
 	s+=" ]";
 	return s;
     }
@@ -148,7 +148,7 @@ public class MyDeque<T> {
 	}
 	System.out.println(q);
 	for(int i=0;i<100;i++){
-	    //q.removeFirst();
+	    q.removeFirst();
 	    q.removeLast();
 	}
 	System.out.println(q);
