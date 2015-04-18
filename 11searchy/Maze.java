@@ -141,32 +141,19 @@ return ("\033[" + x + ";" + y + "H");
 	
 	if(animate){
 	    System.out.println(toString(false));
-	    //System.out.println(""+c.getValue().x()+","+c.getValue().y()+","+current);
-	    //System.out.println(frontier.toString());
-	    /**try{
-		Thread.sleep(1);
+	    System.out.println(""+c.getValue().x()+","+c.getValue().y()+","+current);
+	    System.out.println(frontier.toString());
+	    try{
+		Thread.sleep(100);
 	    }catch(Exception e){
-	    }**/
+	    }
 	}
 	steps++;
 	if(current=='E'){
 	    addPath(c);
 	    System.out.println(toString());
 	    return 1;
-	}/** else if(current=='#'){
-	    try {
-		if(mode==BFS)
-		    currentNode=frontier.removeLast();
-		else if(mode==DFS)
-		    currentNode=frontier.removeFirst();
-		else if(mode==Best || mode==AStar)
-		    currentNode=frontier.removeSmallest();
-		return 0;
-	    } catch (NoSuchElementException e){
-		System.out.println(toString());
-		return -1;
-	    }
-	    }**/
+        }
 	if(steps!=1){
 	    maze[c.getValue().x()][c.getValue().y()]='x';
         }
@@ -218,24 +205,32 @@ return ("\033[" + x + ";" + y + "H");
 	}
 	if(x>0 && (l==' '||l=='E') ){
 	    Coordinate left = new Coordinate(x-1,y);
+	    if(l==' ')
+		maze[x-1][y]='o';
 	    now = new LNode<Coordinate>(left);
 	    now.setNext(c);
 	    frontier.add(now,priority);
 	}
 	if(x<maxx-1 && (r==' '||r=='E')){
 	    Coordinate right = new Coordinate(x+1,y);
+	    if(r==' ')
+		maze[x+1][y]='o';
 	    now = new LNode<Coordinate>(right);
 	    now.setNext(c);
 	    frontier.add(now,priority);
 	}
 	if(y>0 && (u==' '||u=='E')){
 	    Coordinate up = new Coordinate(x,y-1);
+	    if(u==' ')
+		maze[x][y-1]='o';
 	    now = new LNode<Coordinate>(up);
 	    now.setNext(c);
 	    frontier.add(now,priority);
 	}
 	if(y<maxy-1 && (d==' '||d=='E')){
 	    Coordinate down = new Coordinate(x,y+1);
+	    if(d==' ')
+		maze[x][y+1]='o';
 	    now = new LNode<Coordinate>(down);
 	    now.setNext(c);
 	    frontier.add(now,priority);
@@ -292,16 +287,16 @@ return ("\033[" + x + ";" + y + "H");
         System.out.println(m.getSteps());
 	System.out.println("\nBFS");
         m = new Maze(args[0]);
-	m.solveBFS(true);
+	m.solveBFS(false);
         System.out.println(m.getSteps());
 	System.out.println("\nBest");
         m = new Maze(args[0]);
 	m.solveBest(false);
         System.out.println(m.getSteps());
 	System.out.println("\nA*");
-        //m = new Maze(args[0]);
-	//m.solveAStar(true);
-        //System.out.println(m.getSteps());
+        m = new Maze(args[0]);
+	m.solveAStar(false);
+        System.out.println(m.getSteps());
 	//m.pathy();
 	/**int[] s = m.solutionCoordinates();
 	for(int i : s){
