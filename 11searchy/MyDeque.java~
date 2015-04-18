@@ -1,15 +1,18 @@
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class MyDeque<T> {
 
     private Object[] array;
-    public int capacity;
-    public int size;
-    public int start;
-    public int end;
+    private int[] priority;
+    private int capacity;
+    private int size;
+    private int start;
+    private int end;
     
     public MyDeque(int s){
 	array = new Object[s];
+	priority = new int[s];
 	capacity = s;
     }
 
@@ -25,6 +28,11 @@ public class MyDeque<T> {
 	if(size!=1)
 	    start = wrap(start,-1);
         array[start] = value;
+    }
+
+    public void add(T value, int priority){
+	addFirst(value);
+	this.priority[start] = priority;
     }
 
     public void addLast(T value){
@@ -50,7 +58,34 @@ public class MyDeque<T> {
 	resize();
 	return value;
     }
-    
+
+    public T removeSmallest() throws NoSuchElementException {
+	T val;
+	if(size==0){
+	    throw new NoSuchElementException();
+	} else {
+	    int small = start;
+	    for(int i=start;i!=end;i=wrap(i,1)){
+		if(priority[small]>priority[i]){
+		    small = i;
+		}
+	    }
+	    if(priority[small]>priority[end]){
+		small = end;
+	    }
+	    val = (T)array[small];
+	    //System.out.println(priority[small]);
+	    priority[small] = priority[end];
+	    array[small] = removeLast();
+	    end = wrap(end,-1);
+	    size--;
+	    if(resize()){
+		end = wrap(end,1);
+	    }
+	}
+	return val;
+    }
+
     public T removeLast() throws NoSuchElementException {
 	T value = (T)array[end];
 	if(size==0){
@@ -96,20 +131,24 @@ public class MyDeque<T> {
 	}
 	//System.out.println("g");
 	Object[] array2 = new Object[capacity2];
+	int[] priority2 = new int[capacity2];
 	int i=start;
 	int j=0;
 	do {
 	    //System.out.println(i);
 	    array2[j]=array[i];
+	    priority2[j]=priority[i];
 	    i = wrap(i,1);
 	    j++;
 	    //System.out.println(start+" "+end);
 	} while (i!=end);
 	array2[j]=array[i];
+	priority2[j]=priority[i];
 	start=0;
 	end=wrap(start,size-2);
 	capacity = capacity2;
 	array = array2;
+	priority = priority2;
 	return true;
     }
 
@@ -127,14 +166,18 @@ public class MyDeque<T> {
 	}
 	s+="]";
 	s+=" [";
-	for(Object o : array){
+	/**for(Object o : array){
 	    s += o;
 	    s += " ";
-	}
+	    }**/
 	s+=" ]";
 	return s;
     }
     
+    public int size(){
+	return size;
+    }
+
     public String name(){
 	return "shin.dong";
     }
@@ -142,18 +185,13 @@ public class MyDeque<T> {
     public static void main(String[] args){
 	//System.out.println("f");
 	MyDeque<Object> q = new MyDeque<Object>();
+	Random r = new Random();
         for(int i=0;i<100;i++){
-	    q.addFirst(i);
-	    q.addLast(i);
+	    q.add(i,r.nextInt());
 	}
-	System.out.println(q);
 	for(int i=0;i<100;i++){
-	    q.removeFirst();
-	    q.removeLast();
+	    System.out.println(q.removeSmallest());
 	}
-	System.out.println(q);
-	System.out.println(q.start +" "+ q.end);
-
     }
 
 }

@@ -74,9 +74,12 @@ public class MyDeque<T> {
 		small = end;
 	    }
 	    val = (T)array[small];
-	    System.out.println(priority[small]);
+	    //System.out.print(priority[small]+" ");
 	    priority[small] = priority[end];
 	    array[small] = removeLast();
+	    //end = wrap(end,-1);
+	    //size--;
+	    //resize();
 	}
 	return val;
     }
@@ -150,17 +153,14 @@ public class MyDeque<T> {
     public String toString(){
 	String s = "[ ";
 	int i=start;
+	if(size==0)
+	    return "[ ]";
 	while(i!=end){
 	    s += array[i];
 	    s += " ";
 	    i = wrap(i,1);
 	}
-	if(start!=end){
-	    s += array[i];
-	    s += " ";
-	}
-	s+="]";
-	s+=" [";
+	s += array[i];
 	/**for(Object o : array){
 	    s += o;
 	    s += " ";
@@ -185,7 +185,8 @@ public class MyDeque<T> {
 	    q.add(i,r.nextInt());
 	}
 	for(int i=0;i<100;i++){
-	    System.out.println(q.removeSmallest());
+	    Object t = q.removeSmallest();
+	    System.out.println(i+" "+t+" "+q.toString());
 	}
     }
 
