@@ -1,0 +1,29 @@
+terminalotree
+
+root
+
+parent
+
+child
+
+nodes can have a most 1 parent.
+nodes can have many children
+
+full vs balanced
+
+full tree has equal levels of children
+
+	.	.	O	.	.
+	.	O		O	.
+	O	O		O	O
+O		O		O		O
+
+
+taxonatree(max number of children)
+binary tree
+ternary tree
+quaternary tree
+binary search tree
+spray tree
+red black tree
+heap
