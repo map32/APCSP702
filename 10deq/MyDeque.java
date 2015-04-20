@@ -3,10 +3,10 @@ import java.util.NoSuchElementException;
 public class MyDeque<T> {
 
     private Object[] array;
-    public int capacity;
-    public int size;
-    public int start;
-    public int end;
+    private int capacity;
+    private int size;
+    private int start;
+    private int end;
     
     public MyDeque(int s){
 	array = new Object[s];
@@ -126,12 +126,6 @@ public class MyDeque<T> {
 	    s += " ";
 	}
 	s+="]";
-	s+=" [";
-	for(Object o : array){
-	    s += o;
-	    s += " ";
-	}
-	s+=" ]";
 	return s;
     }
     

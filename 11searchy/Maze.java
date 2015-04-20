@@ -177,16 +177,10 @@ return ("\033[" + x + ";" + y + "H");
 	path.clear();
 	while(start!=null){
 	    path.add(0,start.getValue());
-	    m[start.getValue().x()][start.getValue().y()]='x';
+	    maze[start.getValue().x()][start.getValue().y()]='@';
 	    start=start.getNext();
 	}
 	System.out.println(path.toString());
-        for(int i=0;i<maxx;i++){
-	    for(int j=0;j<maxy;j++){
-		System.out.print(m[i][j]);
-	    }
-	    System.out.println();
-	}
     }
 
     public void getNeighbors(LNode<Coordinate> c, int mode){
@@ -194,6 +188,7 @@ return ("\033[" + x + ";" + y + "H");
 	int priority=0;
 	int x = c.getValue().x();
 	int y = c.getValue().y();
+	int di = c.getValue().d()+1;
 	char u = maze[x][y-1];
 	char d = maze[x][y+1];
 	char l = maze[x-1][y];
@@ -201,7 +196,7 @@ return ("\033[" + x + ";" + y + "H");
 	if(mode==Best||mode==AStar){
 	    priority=Math.abs(x-endx)+Math.abs(y-endy);}
 	if(mode==AStar){
-	    priority+=steps;
+	    priority+=di;
 	}
 	if(x>0 && (l==' '||l=='E') ){
 	    Coordinate left = new Coordinate(x-1,y);
@@ -209,6 +204,7 @@ return ("\033[" + x + ";" + y + "H");
 		maze[x-1][y]='o';
 	    now = new LNode<Coordinate>(left);
 	    now.setNext(c);
+	    now.getValue().setd(di);
 	    frontier.add(now,priority);
 	}
 	if(x<maxx-1 && (r==' '||r=='E')){
@@ -217,6 +213,7 @@ return ("\033[" + x + ";" + y + "H");
 		maze[x+1][y]='o';
 	    now = new LNode<Coordinate>(right);
 	    now.setNext(c);
+	    now.getValue().setd(di);
 	    frontier.add(now,priority);
 	}
 	if(y>0 && (u==' '||u=='E')){
@@ -225,6 +222,7 @@ return ("\033[" + x + ";" + y + "H");
 		maze[x][y-1]='o';
 	    now = new LNode<Coordinate>(up);
 	    now.setNext(c);
+	    now.getValue().setd(di);
 	    frontier.add(now,priority);
 	}
 	if(y<maxy-1 && (d==' '||d=='E')){
@@ -233,6 +231,7 @@ return ("\033[" + x + ";" + y + "H");
 		maze[x][y+1]='o';
 	    now = new LNode<Coordinate>(down);
 	    now.setNext(c);
+	    now.getValue().setd(di);
 	    frontier.add(now,priority);
 	}
     }
@@ -340,13 +339,16 @@ class Frontier{
 class Coordinate {
     private int x;
     private int y;
+    private int d;
     public Coordinate(){
 	x=0;
 	y=0;
+	d=0;
     }
     public Coordinate(int xx, int yy){
 	x=xx;
 	y=yy;
+	d=0;
     }
     public int x(){
 	return x;
@@ -355,6 +357,10 @@ class Coordinate {
     public int y(){
 	return y;
     }
+    
+    public int d(){
+	return d;
+    }
 
     public void setx(int xx){
 	x=xx;
@@ -362,6 +368,10 @@ class Coordinate {
 
     public void sety(int yy){
 	y=yy;
+    }
+
+    public void setd(int dd){
+	d=dd;
     }
 
     public void set(int xx, int yy){
