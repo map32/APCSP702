@@ -1,0 +1,93 @@
+import java.util.*;
+import java.lang.*;
+
+class Student
+{
+    // constructor and data members not shown
+    // returns id of this student
+    int id;
+    String name;
+    public int getID()
+    {
+	return id;
+	// not shown
+    }
+    // returns name of this student
+    public String getName()
+    {
+	return name;
+	// not shown
+    }
+    // precondition: o is an instance of student
+    // postcondition: returns true if o equals this student
+    // otherwise returns false
+    public boolean equals(Student o)
+    {
+	return o.getID()==id;
+	// not shown
+    }
+}
+
+class Drawer
+{
+    private int myMaxID; // maximum ID in this drawer
+    private LinkedList myStudents; // all students in this drawer
+    // constructor and some methods not shown
+    // returns maximal ID for this drawer
+    public int getMaxID()
+    {
+	return myMaxID;
+    }
+    // add s to this drawer so students are in ascending order by ID
+    public void addStudent(Student s)
+    {
+	// you will write this
+    }
+    // return an iterator for the students in this drawer
+    public Iterator iterator()
+    {
+	return myStudents.iterator();
+    }
+}
+
+public class FilingCabinet
+{
+    private LinkedList<Drawer> myDrawerList;
+    // precondition: this filing cabinet has at least one Drawer;
+    // studentID is less than or equal to maximum ID
+    // of last Drawer
+    // postcondition: returns the first Drawer d such that
+    // d.getMaxID() >= studentID
+    public Drawer findDrawer(int studentID)
+    {
+	for(Drawer d : myDrawerList){
+	    if(d.getMaxID()>=studentID){
+		return d;
+	    }
+	}
+    }
+    // precondition: student.getID() <= maximum ID of last Drawer
+    // postcondition: student added to proper Drawer
+    public void addStudent(Student student)
+    {
+	Drawer d = findDrawer(student.getID());
+	d.addStudent(student);
+    }
+    // precondition: student.getID() is less than or equal to
+    // maximum ID of last Drawer
+    // postcondition: if there is a Student s in this filing cabinet
+    // equal to student, then s is removed from the
+    // drawer in which it is located; otherwise this
+    // FilingCabinet is unchanged
+    public void removeStudent(Student student)
+    {
+	Iterator it = findDrawer(student.getID()).iterator();
+	for(Student s : it){
+	    if(s.equals(student)){
+		it.remove();
+	    }
+	}
+	// you will write this
+    }
+
+}

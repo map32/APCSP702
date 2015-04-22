@@ -1,7 +1,7 @@
 public class TreeNode<T>{
-    T data;
-    TreeNode<T> left=null;
-    TreeNode<T> right=null;
+    private T data;
+    private TreeNode<T> left=null;
+    private TreeNode<T> right=null;
     
     public TreeNode(T d, TreeNode<T> l, TreeNode<T> r){
 	this(d,l);

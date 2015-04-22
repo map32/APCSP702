@@ -18,6 +18,9 @@ full tree has equal levels of children
 	O	O		O	O
 O		O		O		O
 
+balanced: all subtrees heights differ by no more than 1
+	  and all subtrees are balanced.
+
 
 taxonatree(max number of children)
 binary tree
@@ -35,3 +38,21 @@ impleplantation
   -left
   -right
 
+  tree
+  -root
+  -add(log n operation)
+  -remove(value)
+  -adding and removing are log n time
+
+  add impleplantation xDDDD
+  - add(treenode<t> branch, t data)
+  - add(t data)
+
+ways to read through the elements in a tree
+  
+preordered = VClCr
+	     root first, left child then right child
+postorder = ClCrV
+	    left child, right child then root
+inorder = ClVCr
+	  left child, root, right child
