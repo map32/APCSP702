@@ -52,4 +52,8 @@ public class TreeNode<T>{
     public boolean hasRight(){
 	return right != null;
     }
+
+    public String toString(){
+	return data.toString();
+    }
 }

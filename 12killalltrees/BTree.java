@@ -1,24 +1,5 @@
 
 
-public BTree<T>{
-    TreeNode<T> root;
-    
-    public void add(T data){
-	if(root.hasNext()){
-	    if(!root.hasLeft()){
-		root.setLeft(new TreeNode<T>(data));
-	    } else if(!root.hasRight()){
-		root.setRight(new TreeNode<T>(data));
-	    }
-	} else {
-	    Random r = new Random();
-	    int a = r.nextInt(2);
-	    if(a==0){
-		root.setLeft(new TreeNode<T>(data));
-	    } (a==1){
-		root.set
-    }
-
 import java.io.*;
 import java.util.*;
 
@@ -172,16 +153,23 @@ public class BTree<E> {
       Wrapper for the recursive getHeight method
       ====================*/
     public int getHeight() {
-	return getHeight( root );
+	return getHeight( root , 1);
     }
     /*======== public int getHeight() ==========
       Inputs:   TreeNode<E> curr  
       Returns:  The height of the tree rooted at node curr
       
       ====================*/
-    public int getHeight( TreeNode<E> curr ) {
-	if
-	return -1;
+    public int getHeight( TreeNode<E> curr , int height) {
+	if(curr.hasNext()){
+	    if(curr.hasLeft()){
+		return getHeight(curr.getLeft(), height+1);
+	    } else {
+		return getHeight(curr.getRight(),height+1);
+	    }
+	} else {
+	    return height;
+	}
     }
 
     /*======== public String getLevel() ==========
@@ -193,7 +181,15 @@ public class BTree<E> {
       
       ====================*/
     private String getLevel( TreeNode<E> curr, int level, int currLevel ) {
-	return "";
+	String s = "";
+	if(currLevel+1==level){
+	    s += curr.getLeft().toString() + " " + curr.getRight().toString();
+	    return s;
+	} else if(currLevel>level){
+	    return "";
+	} else {
+	    return getLevel(curr.getLeft(),level,currLevel+1) + getLevel(curr.getRight(),level,currLevel+1);
+	}
     }
     
     /*======== public String toString()) ==========
@@ -218,7 +214,12 @@ public class BTree<E> {
 
       ====================*/
     public String toString() {
-	return "";
+	String s += root.toString();
+	for(int i=2;i<=getHeight();i++){
+	    s += getLevel(root,i,1);
+	    s += "\n";
+	}
+	return s;
     }
 	
 
