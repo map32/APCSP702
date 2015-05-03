@@ -1,5 +1,6 @@
 public class TreeNode<T>{
     private T data;
+    private int level = -1;
     private TreeNode<T> left=null;
     private TreeNode<T> right=null;
     
@@ -11,6 +12,11 @@ public class TreeNode<T>{
     public TreeNode(T d, TreeNode<T> l){
 	this(d);
 	left = l;
+    }
+
+    public TreeNode(T d, int l){
+	this(d);
+	level = l;
     }
 
     public TreeNode(T d){
@@ -29,6 +35,10 @@ public class TreeNode<T>{
 	return right;
     }
 
+    public int getLevel(){
+	return level;
+    }
+
     public void set(T d){
 	data = d;
     }
@@ -39,6 +49,10 @@ public class TreeNode<T>{
 
     public void setRight(TreeNode<T> r){
 	right = r;
+    }
+
+    public void setLevel(int l){
+	level = l;
     }
 
     public boolean hasNext(){

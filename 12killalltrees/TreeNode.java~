@@ -1,7 +1,7 @@
 public class TreeNode<T>{
-    T data;
-    TreeNode<T> left=null;
-    TreeNode<T> right=null;
+    private T data;
+    private TreeNode<T> left=null;
+    private TreeNode<T> right=null;
     
     public TreeNode(T d, TreeNode<T> l, TreeNode<T> r){
 	this(d,l);
@@ -39,5 +39,21 @@ public class TreeNode<T>{
 
     public void setRight(TreeNode<T> r){
 	right = r;
+    }
+
+    public boolean hasNext(){
+	return (hasLeft() || hasRight());
+    }
+
+    public boolean hasLeft(){
+	return left != null;
+    }
+    
+    public boolean hasRight(){
+	return right != null;
+    }
+
+    public String toString(){
+	return data.toString();
     }
 }

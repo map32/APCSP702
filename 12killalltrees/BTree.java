@@ -11,9 +11,14 @@ public class BTree<E> {
     
 
     private TreeNode<E> root;
+    private int height;
 
     public BTree() {
-	root = null;
+	root = new TreeNode<E>(null,1);
+    }
+
+    public BTree(E d){
+	root = new TreeNode<E>(d,1);
     }
 
     /*======== public void add() ==========
@@ -25,23 +30,27 @@ public class BTree<E> {
     public void add( E d ) {
 	Random r = new Random();
 	int a = r.nextInt(2);
+	if(root.getData()==null){
+	    root.setData(d);
+	    return;
+	}
 	if(root.hasNext()){
 	    if(!root.hasLeft()){
-		root.setLeft(new TreeNode<E>(d));
+		root.setLeft(new TreeNode<E>(d),2);
 	    } else if(!root.hasRight()){
-		root.setRight(new TreeNode<E>(d));
+		root.setRight(new TreeNode<E>(d),2);
 	    } else {
 		if(a==0){
-		    add(root.getLeft(), new TreeNode<E>(d));
+		    add(root.getLeft(), new TreeNode<E>(d,2));
 		} else if(a==1){
-		    add(root.getRight(), new TreeNode<E>(d));
+		    add(root.getRight(), new TreeNode<E>(d,2));
 		}
 	    }
 	} else {
 	    if(a==0){
-		root.setLeft(new TreeNode<E>(d));
+		root.setLeft(new TreeNode<E>(d,2));
 	    } else if (a==1){
-		root.setRight(new TreeNode<E>(d));
+		root.setRight(new TreeNode<E>(d,2));
 	    }
 	}
 }
@@ -62,18 +71,24 @@ public class BTree<E> {
 	int a = r.nextInt(2);
 	if(curr.hasLeft()){
 	    if(curr.hasRight()){
+		bn.setLevel(bn.getLevel()+1);
 		if(a==0){
 		    add(curr.getLeft(),bn);
 		} else {
 		    add(curr.getRight(),bn);
 		}
 	    } else {
+		if(bn.getLevel()>height)
+		    height=bn.getLevel();
 		curr.setRight(bn);
 	    }
 	} else {
+	    if(bn.getLevel()>height)
+		height=bn.getLevel();
 	    if(curr.hasRight()){
 		curr.setLeft(bn);
 	    } else {
+		bn.setLevel(bn.getLevel()+1);
 		if(a==0){
 		    curr.setLeft(bn);
 		} else {
@@ -153,7 +168,7 @@ public class BTree<E> {
       Wrapper for the recursive getHeight method
       ====================*/
     public int getHeight() {
-	return getHeight( root , 1);
+	return height;
     }
     /*======== public int getHeight() ==========
       Inputs:   TreeNode<E> curr  
@@ -183,7 +198,7 @@ public class BTree<E> {
     private String getLevel( TreeNode<E> curr, int level, int currLevel ) {
 	String s = "";
 	if(currLevel+1==level){
-	    s += curr.getLeft().toString() + " " + curr.getRight().toString();
+	    s += curr.getLeft().toString() + " " + curr.getRight().toString() + " ";
 	    return s;
 	} else if(currLevel>level){
 	    return "";

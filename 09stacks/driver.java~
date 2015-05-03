@@ -1,7 +1,7 @@
 public class Driver{
     public static void main(String[] args){
-	MyStack stack = new MyStack();
-	MyQueue queue = new MyQueue();
+	MyStack<T> stack = new MyStack<T>();
+	MyQueue<T> queue = new MyQueue<T>();
 	stack.push(5);
 	stack.push(7);
 	stack.push(9);
