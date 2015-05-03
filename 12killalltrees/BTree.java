@@ -14,11 +14,15 @@ public class BTree<E> {
     private int height;
 
     public BTree() {
+<<<<<<< HEAD
 	root = new TreeNode<E>(null,1);
     }
 
     public BTree(E d){
 	root = new TreeNode<E>(d,1);
+=======
+	root = new TreeNode<E>();
+>>>>>>> a1aea01c592ddbe9690e1e380d6e7ed0391f2d0c
     }
 
     /*======== public void add() ==========
@@ -30,8 +34,13 @@ public class BTree<E> {
     public void add( E d ) {
 	Random r = new Random();
 	int a = r.nextInt(2);
+<<<<<<< HEAD
 	if(root.getData()==null){
 	    root.setData(d);
+=======
+	if(root.get()==null){
+	    root.set(d);
+>>>>>>> a1aea01c592ddbe9690e1e380d6e7ed0391f2d0c
 	    return;
 	}
 	if(root.hasNext()){
@@ -116,7 +125,7 @@ public class BTree<E> {
       pre-order Traversal
       ====================*/
     public void preOrder( TreeNode<E> curr ) {
-	System.out.print(curr.getData()+" ");
+	System.out.print(curr.get()+" ");
 	if(curr.hasLeft()){
 	    preOrder(curr.getLeft());
 	}
@@ -135,11 +144,11 @@ public class BTree<E> {
       ====================*/
     public void inOrder( TreeNode<E> curr ) {
 	if(curr.hasLeft()){
-	    preOrder(curr.getLeft());
+	    inOrder(curr.getLeft());
 	}
-	System.out.print(curr.getData()+" ");
+	System.out.print(curr.get()+" ");
 	if(curr.hasRight()){
-	    preOrder(curr.getRight());
+	    inOrder(curr.getRight());
 	}
     }
 
@@ -153,12 +162,12 @@ public class BTree<E> {
       ====================*/
     public void postOrder( TreeNode<E> curr ) {
 	if(curr.hasLeft()){
-	    preOrder(curr.getLeft());
+	    postOrder(curr.getLeft());
 	}
 	if(curr.hasRight()){
-	    preOrder(curr.getRight());
+	    postOrder(curr.getRight());
 	}
-	System.out.print(curr.getData()+" ");
+	System.out.print(curr.get()+" ");
     }
     
     /*======== public int getHeight()) ==========
@@ -198,12 +207,25 @@ public class BTree<E> {
     private String getLevel( TreeNode<E> curr, int level, int currLevel ) {
 	String s = "";
 	if(currLevel+1==level){
+<<<<<<< HEAD
 	    s += curr.getLeft().toString() + " " + curr.getRight().toString() + " ";
+=======
+	    if(curr.hasLeft())
+		s += curr.getLeft().toString()+" ";
+	    if(curr.hasRight())
+		s += curr.getRight().toString()+" ";
+>>>>>>> a1aea01c592ddbe9690e1e380d6e7ed0391f2d0c
 	    return s;
 	} else if(currLevel>level){
 	    return "";
 	} else {
-	    return getLevel(curr.getLeft(),level,currLevel+1) + getLevel(curr.getRight(),level,currLevel+1);
+	    if(curr.hasLeft() && curr.hasRight())
+		return getLevel(curr.getLeft(),level,currLevel+1) + getLevel(curr.getRight(),level,currLevel+1);
+	    if(curr.hasLeft())
+		return getLevel(curr.getLeft(),level,currLevel+1);
+	    if(curr.hasRight())
+		return getLevel(curr.getRight(),level,currLevel+1);
+	    return "":
 	}
     }
     
@@ -229,7 +251,7 @@ public class BTree<E> {
 
       ====================*/
     public String toString() {
-	String s += root.toString();
+	String s = root.toString()+"\n";
 	for(int i=2;i<=getHeight();i++){
 	    s += getLevel(root,i,1);
 	    s += "\n";
@@ -242,7 +264,7 @@ public class BTree<E> {
 
 	BTree<Integer> t = new BTree<Integer>();
 
-	for ( int i=0; i < 8; i++ ) 
+	for ( int i=0; i < 80; i++ ) 
 	    t.add( i );
 	System.out.println( "Pre-order: ");
 	t.traverse( PRE_ORDER );
@@ -254,5 +276,4 @@ public class BTree<E> {
 
 	System.out.println( t );
     }
-}
 }

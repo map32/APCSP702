@@ -23,6 +23,9 @@ public class TreeNode<T>{
 	data = d;
     }
 
+    public TreeNode(){
+    }
+
     public T get(){
 	return data;
     }
@@ -59,7 +62,7 @@ public class TreeNode<T>{
 	return (hasLeft() || hasRight());
     }
 
-    public boolean hasLeft(){
+    public boolean hasLeft() {
 	return left != null;
     }
     
