@@ -13,6 +13,11 @@ public class BSTreeNode<T extends Comparable> {
 	data = d;
 	left = right = null;
     }
+
+    public BSTreeNode(T d, int h){
+	h=height;
+	this(d);
+    }
     
     //accessors
     public T getData() {
@@ -23,6 +28,9 @@ public class BSTreeNode<T extends Comparable> {
     }
     public BSTreeNode<T> getRight() {
 	return right;
+    }
+    public int getHeight(){
+	return height;
     }
 
     //mutators
@@ -35,9 +43,16 @@ public class BSTreeNode<T extends Comparable> {
     public void setRight( BSTreeNode<T> r ) {
 	right = r;
     }
+    public void setHeight( int h){
+	height = h;
+    }
+
+    public String toString(){
+	return data.toString();
+    }
 
     public int compareTo(BSTreeNode<T> n){
-	return 
+	return data.compareTo(n.getData());
     }
 }
 
@@ -58,6 +73,9 @@ import java.util.*;
 public class BSTree <T extends Comparable> {
 
     private BSTreeNode<T> root;
+    private final boolean LEFT = false;
+    private final boolean RIGHT = true;
+    private boolean direction = LEFT;
 
     public BSTree() {
 	root = null;
@@ -77,7 +95,11 @@ public class BSTree <T extends Comparable> {
       Wrapper for the recursive add method
       ====================*/
     public void add( T c ) {
-	root = add( root, new BSTreeNode<T>(c) );
+	if(root==null){
+	    root=c;
+	} else {
+	    add( root, new BSTreeNode<T>(c) );
+	}
     }
 
     /*======== public BSTreeNode<T> add() ==========
@@ -87,8 +109,20 @@ public class BSTree <T extends Comparable> {
 
       Add t to the correct place in the tree rooted at curr.
       ====================*/
-    private BSTreeNode<T> add(BSTreeNode<T> curr, BSTreeNode<T> t) {
-	return null;
+    private void add(BSTreeNode<T> curr, BSTreeNode<T> t) {
+	if(curr.compareTo(t)<0){
+	    if(curr.getLeft()==null){
+		curr.setLeft(t);
+	    } else {
+		add(curr.getLeft(),t);
+	    }
+	} else if(curr.compareTo(t)>0){
+	    if(curr.getRight()==null){
+		curr.setRight(t);
+	    } else {
+		add(curr.getRight(),t);
+	    }
+	}
     }
 
     /*======== public void remove() ==========
@@ -110,9 +144,46 @@ public class BSTree <T extends Comparable> {
       curr, if it exists.
       ====================*/
     private BSTreeNode<T> remove( BSTreeNode<T> curr, T c ) {
-	return null;
+	if(curr.compareTo(c)==0){
+	    if(!(curr.getLeft() && curr.getRight())){
+		curr=null;
+		return c;
+	    } else if (curr.getLeft() && curr.getRight()){
+		curr = tracedown
+	    }
+	} else {
+	    if(curr.compareTo(c)<0){
+		return remove(curr.getLeft(),c);
+	    } else {
+		return remove(curr.getRight(),c);
+	    }
+	}
     }
-
+    
+    private BSTreeNode<T> tracedown(BSTreeNode<T> curr, T c){
+	if(direction==LEFT){
+	    curr = curr.getLeft();
+	} else {
+	    curr = curr.getRight();
+	}
+	direction = !direction;
+	while(curr!=null){
+	    if(direction==LEFT){
+		if(curr.getLeft()==null){
+		    if(curr.getRight()!=null){
+			return tracedown(curr.getRight
+		    return curr;
+		}
+		curr = curr.getLeft();
+	    } else {
+		if(curr.getRight()==null){
+		    return curr;
+		}
+		curr = curr.getRight();
+	    }
+	}
+	return curr;
+    }
 
     /*======== public void inOrder()) ==========
       Inputs:   
