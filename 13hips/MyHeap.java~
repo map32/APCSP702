@@ -1,0 +1,99 @@
+import java.util.*;
+import java.lang.*;
+
+class HNode {
+    int data = null;
+    HNode left = null;
+    HNode right = null;
+
+    public HNode(){
+    }
+
+    public HNode(int d){
+	data = d;
+    }
+
+    public void set(int d){
+	data = d;
+    }
+
+    public void setL(HNode n){
+	left = n;
+    }
+
+    public void setR(HNode r){
+	right = r;
+    }
+
+    public boolean has(){
+	return data != null;
+    }
+
+    public boolean hasL(){
+	return left != null;
+    }
+
+    public boolean hasR(){
+	return right != null;
+    }
+
+    public int get(){
+	return data;
+    }
+
+    public HNode getL(){
+	return left;
+    }
+    
+    public HNode getR(){
+	return right;
+    }
+
+}
+
+public class MyHeap {
+    private final boolean MAX = true;
+    private final boolean MIN = false;
+    private boolean type;
+    private int height, index;
+    private HNode root;
+
+    public MyHeap(){
+	this(true);
+    }
+
+    public MyHeap(boolean isMax){
+	type = isMax;
+	root = new HNode();
+	height = 0;
+	index = 0;
+    }
+
+    public void add(int d){
+	index++;
+	if(index==Math.pow(2,height)){
+	    index=0;
+	    height++;
+	}
+	if(root==null){
+	    root = new HNode(d);
+	} else {
+	    traverse(d,root,1);
+	} 
+    }
+
+    public HNode traverse(int d, HNode n, int localheight){
+	if(localheight-1==height){
+	    if(!n.hasL()){
+		n.setL(new HNode(d));
+		return n;
+	    } else if(!n.hasR()){
+		n.setR(new HNode(d));
+		return n;
+	    }
+	} else {
+	    traverse(d,n.
+	}
+    }
+
+}    
