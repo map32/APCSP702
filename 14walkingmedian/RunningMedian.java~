@@ -1,0 +1,59 @@
+public class RunningMedian {
+    private MyHeap max;
+    private MyHeap min;
+    private int maxL;
+    private int minL;
+
+    private final int MAX = 1;
+    private final int BOTH = 0;
+    private final int MIN = -1;
+
+    private int direction;
+
+    public RunningMedian(){
+	max = new MyHeap(true);
+	min = new MyHeap(false);
+	direction = MAX;
+    }
+
+    public void add(int d) throws NoSuchElementException{
+	if(getMedian()>d){
+	    min.add(d);
+	    minL++;
+	} else {
+	    max.add(d);
+	    maxL++;
+	}
+	adjust();
+    }
+
+    public int getMedian() throws NoSuchElementException{
+	if(direction==MAX)
+	    return max.peek();
+	else if(direction==BOTH)
+	    return (max.peek()+min.peek())/2.;
+	else
+	    return min.peek();
+    }
+
+    private int adjust(){
+	if(maxL-minL==2){
+	    minL.add(maxL.remove());
+	    maxL--;
+	    minL++;
+	} else if (maxL-minL==-2){
+	    maxL.add(minL.remove());
+	    minL--;
+	    maxL++;
+	}
+	if(maxL==minL){
+	    direction = BOTH;
+	} else if(maxL>minL){
+	    direction = MAX;
+	} else {
+	    direction = MIN;
+	}
+    }
+
+    
+}
