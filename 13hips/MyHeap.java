@@ -57,9 +57,8 @@ public class MyHeap {
     private final boolean MIN = false;
     private final boolean RIGHT = false;
     private boolean type;
-    private int height, index;
+    int height, index;
     private HNode root = null;
-    private HNode curr = null;
 
     public MyHeap(){
 	this(true);
@@ -73,7 +72,7 @@ public class MyHeap {
     }
 
     public void add(int d){
-	add(d,root,1);
+	root=add(d,root,1);
 	index++;
 	if(index==Math.pow(2,height)){
 	    index=0;
@@ -81,62 +80,37 @@ public class MyHeap {
 	}
     }
 
-    public boolean add(int d, HNode n, int lheight){
+    public HNode add(int d, HNode n, int lheight){
 	if(n==null){
 	    if(lheight == height + 1){
 		n = new HNode(d);
-		curr = n;
-		return true;
+		return n;
 	    } else {
-		return false;
+		return null;
 	    }
 	} else {
-	    if(traverse(d,n.getL(),lheight+1)){
+	    HNode k = add(d,n.getL(),lheight+1);
+	    if(k!=null){
 		if(height == lheight){
-		    n.setL(curr);
+		    n.setL(k);
 		}
-		swap(n);
-		return true;
-	    } else if (traverse(d,n.getR(),lheight+1)){
-		if(height == lheight){
-		    n.setR(curr);
+		return swap(n,LEFT);
+	    } else {
+		k = add(d,n.getR(),lheight+1);
+		if (k!=null){
+		    if(height == lheight){
+			n.setR(k);
+		    }
+		    return swap(n,RIGHT);
 		}
-		swap(n);
-		return true;
 	    }
-	    return false;
+	    return null;
 	}
     }
 
-    public boolean traverse(int d, HNode n, int localheight){
-	System.out.println(""+localheight+","+height+","+index);
-	if(localheight>height+1)
-	    return false;
-	if(localheight==height+1 && index <= Math.pow(2,height)){
-	    if(n==null){
-		n = new HNode(d);
-		curr = n;
-		return true;
-	    }
-	} else {
-	    if(traverse(d,n.getL(),localheight+1)){
-		if(localheight==height){
-		    n.setL(curr);
-		    return true;
-		}
-	    } else if(traverse(d,n.getR(),localheight+1)){
-		if(localheight==height){
-		    n.setR(curr);
-		    return true;
-		}
-	    }
-	}
-	return false;
-    }
-
-    private void swap(HNode n){
+    private HNode swap(HNode n, boolean direction){
 	if(n!=null && n.getL()!=null){
-	    if(index%2==0){
+	    if(direction==RIGHT){
 		if(type==MAX){
 		    if(n.getR().get()>n.get()){
 			int t = n.get();
@@ -166,79 +140,99 @@ public class MyHeap {
 		}
 	    }
 	}
+	return n;
     }
 
-    public int remove(){
-	int k = root.get();
-        root.set(remove(root));
+    public int remove() throws NoSuchElementException{
+	if(root==null){
+	    throw new NoSuchElementException();
+	}
+	index--;
+	if(index==-1){
+	    index=(int)Math.pow(2,height-1)-1;
+	    height--;
+	}
+	return remove(root,1);
+    }
+
+    private int remove(HNode val, int lheight){
+	int k = val.get();
+	if(height==0){
+	    root=null;
+	    return k;
+	}
+	if(lheight==height){
+	    if(val.hasR()){
+		if(!val.getR().hasL() && !val.getR().hasR()){
+		    val.set(val.getR().get());
+		    val.setR(null);
+		    return k;
+		}
+	    } else if(val.hasL()){
+		if (!val.getL().hasR() && !val.getL().hasL()){
+		    val.set(val.getL().get());
+		    val.setL(null);
+		    return k;
+		}
+	    } else {
+		throw new RuntimeException();
+	    }
+	} else {
+	    int j=k;
+	    try {
+		j=remove(val.getR(),lheight+1);
+	    } catch (RuntimeException e){
+		j=remove(val.getL(),lheight+1);
+	    } finally {
+		val.set(j);
+		swap(val,LEFT);
+		swap(val,RIGHT);
+	    }
+	}
 	return k;
     }
 
-    private int remove(HNode val){
-	if(!val.hasL() && !val.hasR()){
-	    int k = val.get();
-	    val=null;
-	    return k;
-	} else if(!val.hasL()){
-	    int k = val.getL().get();
-	    val=null;
-	    return k;
-	} else {
-	    int k;
-	    if(type==MAX){
-		if(val.getL().get()>val.getR().get()){
-		    k = remove(val.getL());
-		} else {
-		    k = remove(val.getR());
-		}
-	    } else {
-		if(val.getL().get()<val.getR().get()){
-		    k = remove(val.getL());
-		} else {
-		    k = remove(val.getR());
-		}
-	    }
-	    val.set(k);
-	    return k;
+    public int peek() throws NoSuchElementException{
+	if(root==null){
+	    throw new NoSuchElementException();
 	}
-    }
-
-    public int peek(){
 	return root.get();
     }
 
     public String toString(){
 	String s = "";
+	if(root==null){
+	    return s;
+	}
 	s+=root.get();
 	s+="\n";
 	for(int i=1;i<=height;i++){
-	    s+=addstring(root.getL(),i,1);
+	    s+=addstring(root.getL(),1,i);
 	    s+=" ";
-	    s+=addstring(root.getR(),i,1);
+	    s+=addstring(root.getR(),1,i);
 	    s+="\n";
 	}
 	return s;
     }
     
     public String addstring(HNode n, int localheight, int target){
+	if(n==null)
+	    return "";
 	if(localheight==target){
-	    if(n==null){
-		return "";
-	    } else {
-		return ""+n.get();
-	    }
+	    return ""+n.get();
 	} else {
 	    return addstring(n.getL(),localheight+1,target) + " " + addstring(n.getR(),localheight+1,target);
 	}
     }
 
     public static void main(String[]args){
-	MyHeap hip=new MyHeap();
+	MyHeap hip=new MyHeap(false);
 	ArrayList nums = new ArrayList();
+	int[] w = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
 	Random r = new Random();
-	for(int i=0;i<10;i++){
+	for(int i=18;i>=0;i--){
 	    int n=r.nextInt(100);
-	    while(true){
+	    while(w[i]==100){
 		if(nums.contains(n)){
 		    n = r.nextInt(100);
 		    continue;
@@ -246,8 +240,18 @@ public class MyHeap {
 		nums.add(n);
 		hip.add(n);
 		System.out.println(hip.toString());
+		System.out.println(hip.height+" "+hip.index);
 		break;
 	    }
+	    nums.add(w[i]);
+	    hip.add(w[i]);
+	    System.out.println(hip.toString());
+	    System.out.println(hip.height+" "+hip.index);
+	}
+	for(int i=0;i<19;i++){
+	    System.out.println(hip.remove());
+	    System.out.println(hip.height+","+hip.index);
+	    System.out.println(hip.toString());
 	}
     }
 }    
