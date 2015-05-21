@@ -1,0 +1,32 @@
+
+import java.util.*;
+
+public Sorts {
+
+    public static MyHeap heapify(int[] org){
+	MyHeap hip = new MyHeap(false);
+	for(int i : org){
+	    hip.add(i);
+	}
+	return hip;
+    }
+
+    public static int[] sort(int[] org){
+	MyHeap = heapify(org);
+	for(int i=0;i<org.length;i++){
+	    org[i]=heapify.remove();
+	}
+	return org;
+    }
+
+    public static void main(String[] args){
+	int[] l = new int(100);
+	Random r = new Random();
+	for(int i : l){
+	    i = r.nextInt();
+	}
+	Arrays.toString(l);
+	l = Sorts.sort(l);
+	Arrays.toString(l);
+    }
+}
